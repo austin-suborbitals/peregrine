@@ -1,5 +1,7 @@
+PRGDEFAULT=thumbv7em-none-eabi
+
 if [ -z "$PRGTARGET" ]; then
-    export PRGTARGET=thumbv7em-none-eabi
+    export PRGTARGET=$PRGDEFAULT
 fi
 
 if [ "$PRGTARGET" == "host" ] ; then
