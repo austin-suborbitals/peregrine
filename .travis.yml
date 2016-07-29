@@ -6,14 +6,10 @@ rust:
     - nightly
 
 matrix:
-    # host agnostic tests (linux)
-    - env: PRGTARGET="host"
-    # thumbv7em build
-    - env: PRGTARGET=thumbv7em-none-eabi
-
-# TODO: add tests
-env:
-    # add the build_targets directory to the path
-    - RUST_TARGET_PATH=$RUST_TARGET_PATH:./build_targets
+    include:
+        # host agnostic tests (linux)
+        - env: PRGTARGET="host"
+        # thumbv7em build
+        - env: PRGTARGET=thumbv7em-none-eabi
 
 script: ./quick_build.sh
