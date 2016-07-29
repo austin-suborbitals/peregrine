@@ -20,7 +20,7 @@ env:
 script:
     - echo "--------------------------------------------------"
     - echo ""
-    - echo " building target: "$TARGET
+    - echo " building target: $TARGET"
     - echo ""
     - echo "--------------------------------------------------"
 
