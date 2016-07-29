@@ -7,7 +7,7 @@ rust: nightly
 matrix:
     include:
         # host agnostic tests (linux)
-        - env: PRGTARGET="host"
+        - env: PRGTARGET=test
         # thumbv7em build
         - env: PRGTARGET=thumbv7em-none-eabi
 
