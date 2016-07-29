@@ -16,8 +16,4 @@ env:
     # add the build_targets directory to the path
     - RUST_TARGET_PATH=$RUST_TARGET_PATH:./build_targets
 
-script:
-    - echo "USING TARGET: $PRGTARGET"
-    - if [[ "$PRGTARGET" == "host" ]]; then cargo test --verbose; fi
-    - if [[ "$PRGTARGET" != "host" ]]; then cargo build --verbose --target $PRGTARGET; fi
-
+script: ./quick_build.sh
