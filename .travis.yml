@@ -7,23 +7,16 @@ rust:
 
 matrix:
     # host agnostic tests (linux)
-    - env: TARGET=$TESTTARGET
+    - env: PRGTARGET="host"
     # thumbv7em build
-    - env: TARGET=thumbv7em-none-eabi
+    - env: PRGTARGET=thumbv7em-none-eabi
 
 # TODO: add tests
 env:
-    - TESTTARGET=x86_64-unknown-linux-gnu
     # add the build_targets directory to the path
     - RUST_TARGET_PATH=$RUST_TARGET_PATH:./build_targets
 
 script:
-    - echo "--------------------------------------------------"
-    - echo ""
-    - echo " building target: $TARGET"
-    - echo ""
-    - echo "--------------------------------------------------"
-
-    - if [[ "$TARGET" == "$TESTTARGET" ]]; then cargo test --verbose; fi
-    - if [[ "$TARGET" != "$TESTTARGET" ]]; then cargo build --verbose --target $TARGET; fi
+    - if [[ "$PRGTARGET" == "host" ]]; then cargo test --verbose; fi
+    - if [[ "$PRGTARGET" != "host" ]]; then cargo build --verbose --target $PRGTARGET; fi
 
