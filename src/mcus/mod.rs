@@ -4,5 +4,5 @@
 //
 //------------------------------------------------
 
-#[cfg(vendor = "kinetis")] pub mod kinetis;
+pub mod kinetis;
 

@@ -1,1 +1,1 @@
-#[cfg(mcu = "k64")] pub mod k64;
+pub mod k64;
