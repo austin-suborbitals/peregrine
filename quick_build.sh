@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 PRGDEFAULT=thumbv7em-none-eabi
 
 if [ -z "$PRGTARGET" ]; then
