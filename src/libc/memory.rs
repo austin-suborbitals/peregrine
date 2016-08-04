@@ -68,7 +68,17 @@ macro_rules! lex_cmp {
     };
 }
 
-/// Compare regions of memory.
+
+/// Compares two regions of memory.
+///
+/// This is a thin wrapper around memcmp_t::\<usize\>()
+///
+pub unsafe fn memcmp(a: *mut u8, b: *mut u8, byte_cnt: usize) -> i8 {
+    memcmp_t::<usize>(a, b, byte_cnt)
+}
+
+
+/// Compare regions of memory with a generic iterator size.
 ///
 /// While this function is generic, we give the count in bytes.
 /// This allows the user to choose their step size and thus optimization.
@@ -76,7 +86,7 @@ macro_rules! lex_cmp {
 /// Returns the lexical ordering of A compared to B.
 /// Thus, all possible returns are [-1, 0, 1].
 ///
-pub unsafe fn memcmp<T>(a: *mut u8, b: *mut u8, byte_cnt: usize)
+pub unsafe fn memcmp_t<T>(a: *mut u8, b: *mut u8, byte_cnt: usize)
     -> i8
     where T: PartialEq + PartialOrd
 {
@@ -108,13 +118,24 @@ pub unsafe fn memcmp<T>(a: *mut u8, b: *mut u8, byte_cnt: usize)
 #[cfg(test)]
 mod memcmp {
     #[test]
+    fn use_alias() {
+        const TEST_LEN: usize = 64;
+        let mut buff: [u8; TEST_LEN] = [0xB4; TEST_LEN];
+        let mut expect: [u8; TEST_LEN] = [0xAF; TEST_LEN];
+        unsafe {
+            super::memset(buff.as_mut_ptr(), 0xAF, TEST_LEN);
+            assert_eq!(0, super::memcmp(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
+        }
+    }
+
+    #[test]
     fn as_u8() {
         const TEST_LEN: usize = 64;
         let mut buff: [u8; TEST_LEN] = [0xB4; TEST_LEN];
         let mut expect: [u8; TEST_LEN] = [0xAF; TEST_LEN];
         unsafe {
             super::memset(buff.as_mut_ptr(), 0xAF, TEST_LEN);
-            assert_eq!(0, super::memcmp::<u8>(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
+            assert_eq!(0, super::memcmp_t::<u8>(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
         }
     }
 
@@ -125,7 +146,7 @@ mod memcmp {
         let mut expect: [u8; TEST_LEN] = [0xAF; TEST_LEN];
         unsafe {
             super::memset(buff.as_mut_ptr(), 0xAF, TEST_LEN);
-            assert_eq!(0, super::memcmp::<u16>(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
+            assert_eq!(0, super::memcmp_t::<u16>(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
         }
     }
 
@@ -138,7 +159,7 @@ mod memcmp {
             super::memset(buff.as_mut_ptr(), 0xAF, TEST_LEN);
             buff[TEST_LEN-1] = 0xC9;
             // expect the buffer to now return LARGER than the expected
-            assert_eq!(1, super::memcmp::<u16>(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
+            assert_eq!(1, super::memcmp_t::<u16>(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
         }
     }
 
@@ -149,7 +170,7 @@ mod memcmp {
         let mut expect: [u8; TEST_LEN] = [0xAF; TEST_LEN];
         unsafe {
             super::memset(buff.as_mut_ptr(), 0xAF, TEST_LEN);
-            assert_eq!(0, super::memcmp::<u32>(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
+            assert_eq!(0, super::memcmp_t::<u32>(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
         }
     }
 
@@ -162,7 +183,7 @@ mod memcmp {
             super::memset(buff.as_mut_ptr(), 0xAF, TEST_LEN);
             buff[TEST_LEN-1] = 0x09;
             // expect the buffer to now return LARGER than the expected
-            assert_eq!(-1, super::memcmp::<u32>(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
+            assert_eq!(-1, super::memcmp_t::<u32>(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
         }
     }
 
@@ -173,7 +194,7 @@ mod memcmp {
         let mut expect: [u8; TEST_LEN] = [0xAF; TEST_LEN];
         unsafe {
             super::memset(buff.as_mut_ptr(), 0xAF, TEST_LEN);
-            assert_eq!(0, super::memcmp::<u64>(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
+            assert_eq!(0, super::memcmp_t::<u64>(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
         }
     }
 
@@ -186,7 +207,7 @@ mod memcmp {
             super::memset(buff.as_mut_ptr(), 0xAF, TEST_LEN);
             buff[TEST_LEN-1] = 0x09;
             // expect the buffer to now return LARGER than the expected
-            assert_eq!(-1, super::memcmp::<u64>(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
+            assert_eq!(-1, super::memcmp_t::<u64>(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
         }
     }
 
@@ -197,7 +218,7 @@ mod memcmp {
         let mut expect: [u8; TEST_LEN] = [0xAF; TEST_LEN];
         unsafe {
             super::memset(buff.as_mut_ptr(), 0xAF, TEST_LEN);
-            assert_eq!(0, super::memcmp::<u64>(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
+            assert_eq!(0, super::memcmp_t::<u64>(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
         }
     }
 }
@@ -233,7 +254,7 @@ mod memcpy {
         let mut expect: [u8; TEST_LEN] = [0xAF; TEST_LEN];
         unsafe {
             super::memcpy(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN);
-            assert_eq!(0, super::memcmp::<u8>(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
+            assert_eq!(0, super::memcmp(buff.as_mut_ptr(), expect.as_mut_ptr(), TEST_LEN));
         }
     }
 
