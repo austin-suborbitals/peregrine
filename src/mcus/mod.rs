@@ -1,1 +1,8 @@
-pub mod kinetis;
+//------------------------------------------------
+//
+// vendor-specififc modules
+//
+//------------------------------------------------
+
+#[cfg(vendor = "kinetis")] pub mod kinetis;
+
