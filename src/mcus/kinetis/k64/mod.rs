@@ -113,9 +113,65 @@ ioreg!(
     //
 
     0x0004 => timeout r32 rw {
-        0..31 => {
-            set_timeout => ();
-        }
+        0..31 => {  set_timeout => ();  }
+    };
+
+    //
+    // window
+    //
+
+    0x0008 => window r32 rw {
+        0..31 => {  set_window => ();  }
+    };
+
+    //
+    // refresh
+    //
+
+    0x000C => refresh r16 wo {
+        constants => {
+             value_one = 0xA602;
+             value_two = 0xB480;
+        };
+
+        0..15 => {  refresh => [value_one, value_two];  }
+    };
+
+    //
+    // unlock
+    //
+
+    0x000E => unlock r16 wo {
+        constants => {
+             value_one = 0xC520;
+             value_two = 0xD928;
+        };
+
+        0..15 => {  unlock => [value_one, value_two];  }
+    };
+
+    //
+    // timer output
+    //
+
+    0x0010 => timer_output r32 rw {
+        0..31 => {  set_timer_output => ();  }
+    };
+
+    //
+    // reset count
+    //
+
+    0x0014 => reset_count r32 rw {
+        0..31 => {  clear_reset_count => [0xFFFF];  }
+    };
+
+    //
+    // prescaler
+    //
+
+    0x0016 => prescaler r32 rw {
+        8..10 => {  set_prescaler => ();  }
     };
 );
 
