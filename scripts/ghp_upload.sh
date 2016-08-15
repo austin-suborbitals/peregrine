@@ -27,7 +27,7 @@ git config user.name "Travis-Generated Documentation"
 git config user.email "$PROJECT_NAME@travis-ci.org"
 
 echo "copying docs to deploy_docs..."
-mv ../target/doc/* ./
+mv -f ../target/doc/* ./
 
 # create an index.html redirect
 echo "creating index.html"
