@@ -4,7 +4,7 @@ use core::intrinsics::{volatile_load, volatile_store};
 ioreg!(
     name => Watchdog;
     doc_srcs => [
-        "http://www.nxp.com/files/microcontrollers/doc/ref_manual/K64P144M120SF5RM.pdf",
+        "http://www.nxp.com/files/microcontrollers/doc/ref_manual/K64P144M120SF5RM.pdf"
     ];
 
     // define "register global" constants
