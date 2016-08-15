@@ -25,11 +25,16 @@ git clone --branch gh-pages git@github.com:$PROJECT_OWNER/$PROJECT_NAME deploy_d
 cd deploy_docs
 git config user.name "Travis-Generated Documentation"
 git config user.email "$PROJECT_NAME@travis-ci.org"
+
+echo "copying docs to deploy_docs..."
 mv ../target/doc/* ./
 
 # create an index.html redirect
+echo "creating index.html"
 echo "<meta http-equiv=\"refresh\" content=\"0; URL='$PROJECT_NAME/index.html'\" />" > index.html
 
 git add --all .
-git commit -qm "doc upload for $PROJECT_NAME ($TRAVIS_REPO_SLUG)"
-git push -q origin gh-pages
+echo "commiting...."
+git commit -m "doc upload for $PROJECT_NAME ($TRAVIS_REPO_SLUG)"
+echo "pushing..."
+git push origin gh-pages
