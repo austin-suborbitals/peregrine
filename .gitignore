@@ -1,2 +1,4 @@
 target
+deploy_docs
+
 Cargo.lock
