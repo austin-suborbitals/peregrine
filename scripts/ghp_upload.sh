@@ -8,7 +8,7 @@ PROJECT_NAME=peregrine
 SSH_KEY_TRAVIS_ID=345c4e0f5347
 
 
-if [[ "$TRAVIS_BRANCH" != "master" || "$TRAVIS_PULL_REQUEST" = "false" ]]; then
+if [[ "$TRAVIS_BRANCH" != master || "$TRAVIS_PULL_REQUEST" = true ]]; then
     echo "refusing to build docs for branch or PR"
     exit 0
 fi
