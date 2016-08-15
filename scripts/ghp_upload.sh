@@ -36,6 +36,6 @@ echo "<meta http-equiv=\"refresh\" content=\"0; URL='$PROJECT_NAME/index.html'\"
 
 git add --all .
 echo "commiting...."
-git commit -m "doc upload for $PROJECT_NAME ($TRAVIS_REPO_SLUG)"
+git commit -m "doc upload for $PROJECT_NAME ($TRAVIS_COMMIT)"
 echo "pushing..."
 git push origin gh-pages
