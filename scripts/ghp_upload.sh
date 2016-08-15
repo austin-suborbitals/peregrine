@@ -22,12 +22,13 @@ chmod 600 ~/.ssh/id_rsa
 
 git clone --branch gh-pages git@github.com:$PROJECT_OWNER/$PROJECT_NAME deploy_docs
 
+rm -rf deploy_docs/*
 cd deploy_docs
 git config user.name "Travis-Generated Documentation"
 git config user.email "$PROJECT_NAME@travis-ci.org"
 
 echo "copying docs to deploy_docs..."
-mv -f ../target/doc/* ./
+cp -rf ../target/doc/* ./
 
 # create an index.html redirect
 echo "creating index.html"
