@@ -12,3 +12,8 @@ matrix:
         - env: PRGTARGET=thumbv7em-none-eabi
 
 script: ./quick_build.sh
+
+#TODO: hmmm, need to enable all configs and will this build docs for every entry in the matrix?
+after_success:
+    - cargo doc
+    - ./scripts/ghp_upload.sh
