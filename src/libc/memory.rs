@@ -280,3 +280,27 @@ mod memcpy {
         }
     }
 }
+
+
+
+//------------------------------------------------
+//
+// iovecs
+//
+//------------------------------------------------
+
+/// Defines an I/O Vector that contains a pointer and size.
+pub struct IOVec {
+    pub ptr: *const u8,
+    pub size: usize,
+}
+impl IOVec {
+    /// Instantiates a new IOVec given the pointer and size.
+    pub fn new(ptr: *const u8, size: usize) -> IOVec { IOVec{ptr:ptr, size:size} }
+
+    /// Instantiates a new IOVec given a u32 address and size
+    pub fn from_addr(addr: u32, size: usize) -> IOVec { IOVec{ptr:(addr as *const u8), size:size} }
+
+    /// Casts the contained pointer to a pointer of the given generic type.
+    pub fn convert_ptr<T>(&self) -> *const T { self.ptr as *const T }
+}

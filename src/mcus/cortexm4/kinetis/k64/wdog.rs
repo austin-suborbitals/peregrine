@@ -174,4 +174,3 @@ ioreg!(
         8..10 => {  set_prescaler => ();  }
     };
 );
-
