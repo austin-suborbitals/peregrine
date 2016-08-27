@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["libc",""],["mcus",""]]});
+initSidebarItems({"fn":[["main",""]],"mod":[["libc",""],["mcus",""],["traits",""]]});
