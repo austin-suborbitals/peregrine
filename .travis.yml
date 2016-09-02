@@ -9,7 +9,7 @@ matrix:
         # host agnostic tests (linux)
         - env: PRGTARGET=test
         # thumbv7em build
-        - env: PRGTARGET=thumbv7em-none-eabi
+        - env: PRGTARGET=thumbv7m-none-eabi
 
 script: ./quick_build.sh
 
