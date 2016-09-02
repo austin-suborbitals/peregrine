@@ -1,3 +1,4 @@
+extern crate core;
 use core::intrinsics::{volatile_load, volatile_store};
 
 

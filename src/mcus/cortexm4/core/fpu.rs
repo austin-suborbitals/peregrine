@@ -1,34 +1,36 @@
 extern crate core;
-use self::core::intrinsics::{volatile_load, volatile_store};
+use core::intrinsics::{volatile_load, volatile_store};
 
-/* TODO: coprocessor access register
-    0x0000 => access r32 rw {
+ioreg!(
+    name => Access;
+    init => pub fn init(&self) {
+        self.full_access();
+        // TODO: flush the bus
+    };
+
+    0x000 => access r32 rw{
         20..23 => {
-            disable => [0x0];
-            privilidged => [0x1];
+            disallow => [0x0];
+            priviledged => [0x1];
             full_access => [0x3];
         }
     };
-*/
+);
 
 ioreg!(
-    name => FPU;
+    name => Unit;
 
     0x0000 => context r32 rw {
-        // 0..29 are statuses to the context i.e. nothing to toggle/set
+        31 => {
+            enable_automatic_state_saving => [0x1];
+            disable_automatic_state_saving => [0x1];
+        }
 
         30 => {
-            enable_lazy_preservation => [0x1];
-            disable_lazy_preservation => [0x0];
-        }
-
-        31 => {
-            enable_automatic_preservation => [0x1];
-            disable_automatic_preservation => [0x0];
+            enable_lazy_state_saving => [0x1];
+            disable_lazy_state_saving => [0x1];
         }
     };
 
-    0x0004 => address r32 ro {
-        // contains the address where the context is stored
-    };
+    0x0004 => context_address r32 ro {};
 );

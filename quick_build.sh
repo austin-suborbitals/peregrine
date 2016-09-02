@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-PRGDEFAULT=thumbv7em-none-eabi
+PRGDEFAULT=thumbv7m-none-eabi
 
 if [ -z "$PRGTARGET" ]; then
     export PRGTARGET=$PRGDEFAULT

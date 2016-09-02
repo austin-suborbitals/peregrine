@@ -62,3 +62,43 @@ pub trait NVIC {
     /// Priorities should be returned in the range [0, priority_bits<<2].
     fn get_priority(&self, irq: u8) -> u8;
 }
+
+
+//------------------------------------------------
+//
+// SysTick
+//
+//------------------------------------------------
+
+/// Enables generic handling and initialization of a SysTick core module.
+pub trait SysTick {
+    /// This function should enable the ticking of the SysTick module.
+    fn enable(&self);
+    /// This function should disable the ticking of the SysTick module. No resetting should be done
+    /// unless specified by the mcu's manual.
+    fn disable(&self);
+    /// This function should indicate if the module has counted to 0 since the last time
+    /// the status (or equivalent) register has been read. Used when interrupts are disabled.
+    fn has_reset(&self) -> bool;
+    /// This function should enable any interrupts availble to the module. Typically an
+    /// exception when the module hits 0.
+    fn enable_interrupt(&self);
+    /// Disables the SysTick exception. No other side effects should be done, unless required to
+    /// execute the disabling.
+    fn disable_interrupt(&self);
+
+	/// This function should set the value from which the counter will tick.
+	fn set_tick_reload_value(&self, val: usize);
+
+	/// This function should return the current value of the countdown. If this cannot be accessed,
+	/// (-1) as usize should be returned.
+	fn current_tick(&self) -> usize;
+
+	/// This function should indicate if the provided calibration value is reliable, or given at all.
+	fn has_calibration_value(&self) -> bool;
+	/// This function should return the 10ms calibration value, regardless of whether it is valid
+	/// or not. The caller is responsible for checking its validity.
+	fn calibration_value(&self) -> usize;
+
+    // TODO: clock sourcing
+}

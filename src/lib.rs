@@ -3,6 +3,7 @@
 
 #![feature(plugin)]
 #![feature(const_fn)]
+#![feature(lang_items)]
 #![feature(core_intrinsics)]
 #![feature(associated_consts)]
 
@@ -15,16 +16,6 @@
 
 pub mod libc;
 pub mod mcus;
+pub mod os;
 
 pub mod traits;
-
-
-//------------------------------------------------
-//
-//
-//
-//------------------------------------------------
-
-pub fn main<T: traits::MCU>(mcu: T) {
-
-}

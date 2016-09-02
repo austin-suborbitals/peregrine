@@ -8,12 +8,20 @@ use core::cmp::{PartialOrd, PartialEq};
 //
 //------------------------------------------------
 
+
+#[no_mangle]
+pub unsafe fn __aeabi_memclr(dest: *mut u8, val: u8, cnt: usize) {
+    for i in 0..cnt { *(dest.offset(i as isize)) = val; }
+}
+
 /// Set a region of memory to a given byte value.
 ///
 /// Internally, this uses compiler intrinsics (volatile_set_memory).
 ///
 pub unsafe fn memset(dest: *mut u8, val: u8, cnt: usize) {
     // TODO: negative byte safety -- compiler seems to nop it
+
+    // undefined __aeabi_memclr reference :/
     intrinsics::volatile_set_memory(dest, val, cnt);
 }
 #[cfg(test)]
