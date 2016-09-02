@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["FPU","Pointer wrapper that implements the FPU operations"]]});
+initSidebarItems({"struct":[["Access","Pointer wrapper that implements the Access operations"],["Unit","Pointer wrapper that implements the Unit operations"]]});

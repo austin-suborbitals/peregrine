@@ -1,1 +1,1 @@
-initSidebarItems({"mod":[["fpu",""]]});
+initSidebarItems({"mod":[["fpu",""],["systick",""]]});

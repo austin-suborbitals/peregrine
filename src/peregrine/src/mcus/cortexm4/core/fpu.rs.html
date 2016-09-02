@@ -76,40 +76,44 @@
 <span id="32">32</span>
 <span id="33">33</span>
 <span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
 </pre><pre class='rust '>
 <span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>core</span>;
-<span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>core</span>::<span class='ident'>intrinsics</span>::{<span class='ident'>volatile_load</span>, <span class='ident'>volatile_store</span>};
-
-<span class='comment'>/* TODO: coprocessor access register
-    0x0000 =&gt; access r32 rw {
-        20..23 =&gt; {
-            disable =&gt; [0x0];
-            privilidged =&gt; [0x1];
-            full_access =&gt; [0x3];
-        }
-    };
-*/</span>
+<span class='kw'>use</span> <span class='ident'>core</span>::<span class='ident'>intrinsics</span>::{<span class='ident'>volatile_load</span>, <span class='ident'>volatile_store</span>};
 
 <span class='macro'>ioreg</span><span class='macro'>!</span>(
-    <span class='ident'>name</span> <span class='op'>=&gt;</span> <span class='ident'>FPU</span>;
+    <span class='ident'>name</span> <span class='op'>=&gt;</span> <span class='ident'>Access</span>;
+    <span class='ident'>init</span> <span class='op'>=&gt;</span> <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>init</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) {
+        <span class='self'>self</span>.<span class='ident'>full_access</span>();
+        <span class='comment'>// TODO: flush the bus</span>
+    };
+
+    <span class='number'>0x000</span> <span class='op'>=&gt;</span> <span class='ident'>access</span> <span class='ident'>r32</span> <span class='ident'>rw</span>{
+        <span class='number'>20</span>..<span class='number'>23</span> <span class='op'>=&gt;</span> {
+            <span class='ident'>disallow</span> <span class='op'>=&gt;</span> [<span class='number'>0x0</span>];
+            <span class='ident'>priviledged</span> <span class='op'>=&gt;</span> [<span class='number'>0x1</span>];
+            <span class='ident'>full_access</span> <span class='op'>=&gt;</span> [<span class='number'>0x3</span>];
+        }
+    };
+);
+
+<span class='macro'>ioreg</span><span class='macro'>!</span>(
+    <span class='ident'>name</span> <span class='op'>=&gt;</span> <span class='ident'>Unit</span>;
 
     <span class='number'>0x0000</span> <span class='op'>=&gt;</span> <span class='ident'>context</span> <span class='ident'>r32</span> <span class='ident'>rw</span> {
-        <span class='comment'>// 0..29 are statuses to the context i.e. nothing to toggle/set</span>
+        <span class='number'>31</span> <span class='op'>=&gt;</span> {
+            <span class='ident'>enable_automatic_state_saving</span> <span class='op'>=&gt;</span> [<span class='number'>0x1</span>];
+            <span class='ident'>disable_automatic_state_saving</span> <span class='op'>=&gt;</span> [<span class='number'>0x1</span>];
+        }
 
         <span class='number'>30</span> <span class='op'>=&gt;</span> {
-            <span class='ident'>enable_lazy_preservation</span> <span class='op'>=&gt;</span> [<span class='number'>0x1</span>];
-            <span class='ident'>disable_lazy_preservation</span> <span class='op'>=&gt;</span> [<span class='number'>0x0</span>];
-        }
-
-        <span class='number'>31</span> <span class='op'>=&gt;</span> {
-            <span class='ident'>enable_automatic_preservation</span> <span class='op'>=&gt;</span> [<span class='number'>0x1</span>];
-            <span class='ident'>disable_automatic_preservation</span> <span class='op'>=&gt;</span> [<span class='number'>0x0</span>];
+            <span class='ident'>enable_lazy_state_saving</span> <span class='op'>=&gt;</span> [<span class='number'>0x1</span>];
+            <span class='ident'>disable_lazy_state_saving</span> <span class='op'>=&gt;</span> [<span class='number'>0x1</span>];
         }
     };
 
-    <span class='number'>0x0004</span> <span class='op'>=&gt;</span> <span class='ident'>address</span> <span class='ident'>r32</span> <span class='ident'>ro</span> {
-        <span class='comment'>// contains the address where the context is stored</span>
-    };
+    <span class='number'>0x0004</span> <span class='op'>=&gt;</span> <span class='ident'>context_address</span> <span class='ident'>r32</span> <span class='ident'>ro</span> {};
 );
 </pre>
 </section>
