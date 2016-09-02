@@ -4,15 +4,26 @@ use core::cmp::{PartialOrd, PartialEq};
 
 //------------------------------------------------
 //
-// memset
+// missing intrinsics
 //
 //------------------------------------------------
-
 
 #[no_mangle]
 pub unsafe fn __aeabi_memclr(dest: *mut u8, val: u8, cnt: usize) {
     for i in 0..cnt { *(dest.offset(i as isize)) = val; }
 }
+
+#[no_mangle]
+pub unsafe fn __aeabi_memset(dest: *mut u8, val: u8, cnt: usize) {
+    __aeabi_memclr(dest, val, cnt);
+}
+
+
+//------------------------------------------------
+//
+// memset
+//
+//------------------------------------------------
 
 /// Set a region of memory to a given byte value.
 ///

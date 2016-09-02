@@ -4,6 +4,13 @@ language: rust
 # TODO: use rustup to pin version?
 rust: nightly
 
+addons:
+    apt:
+        sources:
+            - debian-sid
+        packages:
+            - gcc-arm-none-eabi
+
 matrix:
     include:
         # host agnostic tests (linux)
@@ -11,7 +18,7 @@ matrix:
         # thumbv7em build
         - env: PRGTARGET=thumbv7m-none-eabi
 
-script: ./quick_build.sh
+script: ./quick_build.sh --release --verbose
 
 #TODO: hmmm, need to enable all configs and will this build docs for every entry in the matrix?
 after_success:
