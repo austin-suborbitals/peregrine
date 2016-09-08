@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Bitmap` struct in crate `peregrine`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Bitmap">
+
+    <title>peregrine::libc::structures::Bitmap - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../../index.html'>peregrine</a>::<wbr><a href='../index.html'>libc</a>::<wbr><a href='index.html'>structures</a></p><script>window.sidebarCurrent = {name: 'Bitmap', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>peregrine</a>::<wbr><a href='../index.html'>libc</a>::<wbr><a href='index.html'>structures</a>::<wbr><a class='struct' href=''>Bitmap</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-63' class='srclink' href='../../../src/peregrine/src/libc/structures/bitmap.rs.html#4-8' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Bitmap {
+    // some fields omitted
+}</pre><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../../../peregrine/libc/structures/struct.Bitmap.html' title='peregrine::libc::structures::Bitmap'>Bitmap</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-67' class='srclink' href='../../../src/peregrine/src/libc/structures/bitmap.rs.html#10-192' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class='method'><span id='new.v' class='invisible'><code>fn <a href='#method.new' class='fnname'>new</a>(addr: *const u8, size: usize) -&gt; <a class='struct' href='../../../peregrine/libc/structures/struct.Bitmap.html' title='peregrine::libc::structures::Bitmap'>Bitmap</a></code></span></h4>
+<div class='docblock'><p>Create a new IOVec from the info, and initialize a bitmap</p>
+</div><h4 id='method.from_iov' class='method'><span id='from_iov.v' class='invisible'><code>fn <a href='#method.from_iov' class='fnname'>from_iov</a>(iov: <a class='struct' href='../../../peregrine/libc/memory/struct.IOVec.html' title='peregrine::libc::memory::IOVec'>IOVec</a>) -&gt; <a class='struct' href='../../../peregrine/libc/structures/struct.Bitmap.html' title='peregrine::libc::structures::Bitmap'>Bitmap</a></code></span></h4>
+<div class='docblock'><p>Consume the IOVec and return the initialized bitmap</p>
+</div><h4 id='method.count' class='method'><span id='count.v' class='invisible'><code>fn <a href='#method.count' class='fnname'>count</a>(&amp;self) -&gt; usize</code></span></h4>
+<div class='docblock'><p>Get the total number of bits in the bitmap.</p>
+</div><h4 id='method.used' class='method'><span id='used.v' class='invisible'><code>fn <a href='#method.used' class='fnname'>used</a>(&amp;self) -&gt; usize</code></span></h4>
+<div class='docblock'><p>Get the number of set bits in the bitmap.</p>
+</div><h4 id='method.free' class='method'><span id='free.v' class='invisible'><code>fn <a href='#method.free' class='fnname'>free</a>(&amp;self) -&gt; usize</code></span></h4>
+<div class='docblock'><p>Get the number of unset bits in the bitmap.</p>
+</div><h4 id='method.is_set' class='method'><span id='is_set.v' class='invisible'><code>fn <a href='#method.is_set' class='fnname'>is_set</a>(&amp;self, index: usize) -&gt; bool</code></span></h4>
+<div class='docblock'><p>Get the state of the Nth bit.</p>
+</div><h4 id='method.set' class='method'><span id='set.v' class='invisible'><code>fn <a href='#method.set' class='fnname'>set</a>(&amp;mut self, index: usize) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;(),&nbsp;&amp;'static str&gt;</code></span></h4>
+<div class='docblock'><p>Sets the bit at the given index.</p>
+
+<p>An error is returned if the index is out of the bitmap&#39;s bounds.</p>
+</div><h4 id='method.checked_set' class='method'><span id='checked_set.v' class='invisible'><code>fn <a href='#method.checked_set' class='fnname'>checked_set</a>(&amp;mut self, index: usize) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;(),&nbsp;&amp;'static str&gt;</code></span></h4>
+<div class='docblock'><p>Sets the bit at the given index.</p>
+
+<p>An error is returned if the index is out of the bitmap&#39;s bounds or if the bit was already set.</p>
+</div><h4 id='method.set_range' class='method'><span id='set_range.v' class='invisible'><code>fn <a href='#method.set_range' class='fnname'>set_range</a>(&amp;mut self, index: usize, count: usize) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;(),&nbsp;&amp;'static str&gt;</code></span></h4>
+<div class='docblock'><p>Sets the bits starting at the given index through the given range.</p>
+
+<p>An error is returned if the index is out of the bitmap&#39;s bounds.</p>
+</div><h4 id='method.clear' class='method'><span id='clear.v' class='invisible'><code>fn <a href='#method.clear' class='fnname'>clear</a>(&amp;mut self, index: usize) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;(),&nbsp;&amp;'static str&gt;</code></span></h4>
+<div class='docblock'><p>Clears the bit at the given index.</p>
+
+<p>An error is returned if the index is out of the bitmap&#39;s bounds.</p>
+</div><h4 id='method.checked_clear' class='method'><span id='checked_clear.v' class='invisible'><code>fn <a href='#method.checked_clear' class='fnname'>checked_clear</a>(&amp;mut self, index: usize) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;(),&nbsp;&amp;'static str&gt;</code></span></h4>
+<div class='docblock'><p>Clears the bit at the given index.</p>
+
+<p>An error is returned if the index is out of the bitmap&#39;s bounds or if the bit was already unset.</p>
+</div><h4 id='method.find' class='method'><span id='find.v' class='invisible'><code>fn <a href='#method.find' class='fnname'>find</a>(&amp;self, count: usize) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;usize&gt;</code></span></h4>
+<div class='docblock'><p>Search the bitmap for <code>count</code> contiguous unset bits. If found, return the block number that starts the region.</p>
+</div><h4 id='method.find_and_set' class='method'><span id='find_and_set.v' class='invisible'><code>fn <a href='#method.find_and_set' class='fnname'>find_and_set</a>(&amp;mut self, count: usize) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/result/enum.Result.html' title='core::result::Result'>Result</a>&lt;usize,&nbsp;&amp;'static str&gt;</code></span></h4>
+<div class='docblock'><p>Search the bitmap for <code>count</code> contiguous unset bits. If found, set them.</p>
+</div></div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../../";
+        window.currentCrate = "peregrine";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
+    
+    <script defer src="../../../search-index.js"></script>
+</body>
+</html>
