@@ -4,6 +4,7 @@ use core::intrinsics::{volatile_copy_nonoverlapping_memory, volatile_set_memory}
 use ::mcus::cortexm4;
 
 pub mod wdog;
+pub mod sim;
 
 extern {
     fn entry(mcu: K64) -> !;
@@ -74,6 +75,7 @@ mcu!(
         systick     => cortexm4::core::systick::SysTick     @ 0xE000_E010;
         fpu_coproc  => cortexm4::core::fpu::Access          @ 0xE000_ED88;  // enables full access
         fpu         => cortexm4::core::fpu::Unit            @ 0xE000_EF34;
+        sim         => sim::SIM                             @ 0x4004_7000;
     };
 );
 
@@ -92,11 +94,11 @@ impl ::traits::MCU for K64 {
 
     /// Get stack region information.
     fn stack_memory(&self) -> ::libc::memory::IOVec {
-        ::libc::memory::IOVec{ptr: __stack_begin as *const u8, size: (__stack_end-__stack_begin) as usize}
+        unsafe { ::libc::memory::IOVec{ptr: __stack_begin as *const u8, size: (__stack_end-__stack_begin) as usize} }
     }
 
     /// Get heap region information.
     fn heap_memory(&self) -> ::libc::memory::IOVec {
-        ::libc::memory::IOVec{ptr: __heap_begin as *const u8, size: (__heap_end-__heap_begin) as usize}
+        unsafe { ::libc::memory::IOVec{ptr: __heap_begin as *const u8, size: (__heap_end-__heap_begin) as usize} }
     }
 }
