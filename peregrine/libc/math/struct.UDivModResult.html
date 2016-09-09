@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="API documentation for the Rust `find_last_set` fn in crate `peregrine`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang, find_last_set">
+    <meta name="description" content="API documentation for the Rust `UDivModResult` struct in crate `peregrine`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, UDivModResult">
 
-    <title>peregrine::os::mman::find_last_set - Rust</title>
+    <title>peregrine::libc::math::UDivModResult - Rust</title>
 
     <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
     <link rel="stylesheet" type="text/css" href="../../../main.css">
@@ -28,7 +28,7 @@
 
     <nav class="sidebar">
         
-        <p class='location'><a href='../../index.html'>peregrine</a>::<wbr><a href='../index.html'>os</a>::<wbr><a href='index.html'>mman</a></p><script>window.sidebarCurrent = {name: 'find_last_set', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+        <p class='location'><a href='../../index.html'>peregrine</a>::<wbr><a href='../index.html'>libc</a>::<wbr><a href='index.html'>math</a></p><script>window.sidebarCurrent = {name: 'UDivModResult', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -42,13 +42,24 @@
         </form>
     </nav>
 
-    <section id='main' class="content fn">
-<h1 class='fqn'><span class='in-band'>Function <a href='../../index.html'>peregrine</a>::<wbr><a href='../index.html'>os</a>::<wbr><a href='index.html'>mman</a>::<wbr><a class='fn' href=''>find_last_set</a></span><span class='out-of-band'><span id='render-detail'>
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../../index.html'>peregrine</a>::<wbr><a href='../index.html'>libc</a>::<wbr><a href='index.html'>math</a>::<wbr><a class='struct' href=''>UDivModResult</a></span><span class='out-of-band'><span id='render-detail'>
                    <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
                        [<span class='inner'>&#x2212;</span>]
                    </a>
-               </span><a id='src-664' class='srclink' href='../../../src/peregrine/src/os/mman/mod.rs.html#10-12' title='goto source code'>[src]</a></span></h1>
-<pre class='rust fn'>pub fn find_last_set(word: usize) -&gt; u8</pre></section>
+               </span><a id='src-7' class='srclink' href='../../../src/peregrine/src/libc/math.rs.html#9' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct UDivModResult {
+    pub quot: usize,
+    pub rem: usize,
+}</pre><h2 class='fields'>Fields</h2><span id='structfield.quot' class='structfield'>
+                           <span id='quot.v' class='invisible'>
+                           <code>quot: usize</code>
+                           </span></span><span class='stab '></span><span id='structfield.rem' class='structfield'>
+                           <span id='rem.v' class='invisible'>
+                           <code>rem: usize</code>
+                           </span></span><span class='stab '></span><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl <a class='struct' href='../../../peregrine/libc/math/struct.UDivModResult.html' title='peregrine::libc::math::UDivModResult'>UDivModResult</a></code></span><span class='out-of-band'><div class='ghost'></div><a id='src-10' class='srclink' href='../../../src/peregrine/src/libc/math.rs.html#10-12' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.round_up' class='method'><span id='round_up.v' class='invisible'><code>fn <a href='#method.round_up' class='fnname'>round_up</a>(&amp;self) -&gt; usize</code></span></h4>
+</div></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>

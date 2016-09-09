@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `src/os/mman/mod.rs`.">
-    <meta name="keywords" content="rust, rustlang, rust-lang">
+    <meta name="description" content="API documentation for the Rust `__aeabi_idivmod` fn in crate `peregrine`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, __aeabi_idivmod">
 
-    <title>mod.rs.html -- source</title>
+    <title>peregrine::libc::math::__aeabi_idivmod - Rust</title>
 
-    <link rel="stylesheet" type="text/css" href="../../../../../rustdoc.css">
-    <link rel="stylesheet" type="text/css" href="../../../../../main.css">
+    <link rel="stylesheet" type="text/css" href="../../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../../main.css">
     
 
     
@@ -28,7 +28,7 @@
 
     <nav class="sidebar">
         
-        
+        <p class='location'><a href='../../index.html'>peregrine</a>::<wbr><a href='../index.html'>libc</a>::<wbr><a href='index.html'>math</a></p><script>window.sidebarCurrent = {name: '__aeabi_idivmod', ty: 'fn', relpath: ''};</script><script defer src="sidebar-items.js"></script>
     </nav>
 
     <nav class="sub">
@@ -42,37 +42,13 @@
         </form>
     </nav>
 
-    <section id='main' class="content source"><pre class="line-numbers"><span id="1"> 1</span>
-<span id="2"> 2</span>
-<span id="3"> 3</span>
-<span id="4"> 4</span>
-<span id="5"> 5</span>
-<span id="6"> 6</span>
-<span id="7"> 7</span>
-<span id="8"> 8</span>
-<span id="9"> 9</span>
-<span id="10">10</span>
-<span id="11">11</span>
-<span id="12">12</span>
-<span id="13">13</span>
-<span id="14">14</span>
-</pre><pre class='rust '>
-<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>core</span>;
-<span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>core</span>::<span class='ident'>intrinsics</span>::{<span class='ident'>ctlz</span>, <span class='ident'>cttz</span>};
-
-
-<span class='attribute'>#[<span class='ident'>inline</span>(<span class='ident'>always</span>)]</span>
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>find_first_set</span>(<span class='ident'>word</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>u8</span> {
-	(<span class='kw'>unsafe</span>{<span class='ident'>cttz</span>(<span class='ident'>word</span>)} <span class='op'>-</span> <span class='number'>1</span>) <span class='kw'>as</span> <span class='ident'>u8</span>
-}
-
-<span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>find_last_set</span>(<span class='ident'>word</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>u8</span> {
-	(<span class='kw'>if</span> <span class='ident'>word</span> <span class='op'>!=</span> <span class='number'>0</span> { <span class='number'>32</span> <span class='op'>-</span> <span class='kw'>unsafe</span>{<span class='ident'>ctlz</span>(<span class='ident'>word</span>)} } <span class='kw'>else</span> { <span class='number'>0</span> } <span class='op'>-</span> <span class='number'>1</span>) <span class='kw'>as</span> <span class='ident'>u8</span>
-}
-
-<span class='comment'>// TODO: rest of tlsf</span>
-</pre>
-</section>
+    <section id='main' class="content fn">
+<h1 class='fqn'><span class='in-band'>Function <a href='../../index.html'>peregrine</a>::<wbr><a href='../index.html'>libc</a>::<wbr><a href='index.html'>math</a>::<wbr><a class='fn' href=''>__aeabi_idivmod</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-24' class='srclink' href='../../../src/peregrine/src/libc/math.rs.html#43-55' title='goto source code'>[src]</a></span></h1>
+<pre class='rust fn'>pub fn __aeabi_idivmod(lhs: isize, rhs: isize) -&gt; <a class='struct' href='../../../peregrine/libc/math/struct.IDivModResult.html' title='peregrine::libc::math::IDivModResult'>IDivModResult</a></pre></section>
     <section id='search' class="content hidden"></section>
 
     <section class="footer"></section>
@@ -126,13 +102,13 @@
     
 
     <script>
-        window.rootPath = "../../../../../";
+        window.rootPath = "../../../";
         window.currentCrate = "peregrine";
         window.playgroundUrl = "";
     </script>
-    <script src="../../../../../jquery.js"></script>
-    <script src="../../../../../main.js"></script>
+    <script src="../../../jquery.js"></script>
+    <script src="../../../main.js"></script>
     
-    <script defer src="../../../../../search-index.js"></script>
+    <script defer src="../../../search-index.js"></script>
 </body>
 </html>

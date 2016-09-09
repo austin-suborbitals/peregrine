@@ -215,7 +215,7 @@
 
     <span class='ident'>peripherals</span> <span class='op'>=&gt;</span> {
         <span class='comment'>// we initialize the watchdog first</span>
-        <span class='ident'>wdog</span>        <span class='op'>=&gt;</span> <span class='ident'>wdog</span>::<span class='ident'>Watchdog</span>                         @ <span class='number'>0x4005_2000</span>;
+        <span class='ident'>wdog</span>        <span class='op'>=&gt;</span> <span class='ident'>wdog</span>::<span class='ident'>Watchdog</span>                       @ <span class='number'>0x4005_2000</span>;
 
         <span class='comment'>// core modules</span>
         <span class='ident'>systick</span>     <span class='op'>=&gt;</span> <span class='ident'>cortexm4</span>::<span class='ident'>core</span>::<span class='ident'>systick</span>::<span class='ident'>SysTick</span>     @ <span class='number'>0xE000_E010</span>;

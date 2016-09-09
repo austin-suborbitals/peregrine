@@ -370,6 +370,9 @@
 <span id="326">326</span>
 <span id="327">327</span>
 <span id="328">328</span>
+<span id="329">329</span>
+<span id="330">330</span>
+<span id="331">331</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>core</span>::<span class='ident'>intrinsics</span>;
 <span class='kw'>use</span> <span class='ident'>core</span>::<span class='ident'>cmp</span>::{<span class='ident'>PartialOrd</span>, <span class='ident'>PartialEq</span>};
@@ -682,6 +685,9 @@
 <span class='comment'>//------------------------------------------------</span>
 
 <span class='doccomment'>/// Defines an I/O Vector that contains a pointer and size.</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Clone</span>)]</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>Debug</span>)]</span>
+<span class='attribute'>#[<span class='ident'>derive</span>(<span class='ident'>PartialEq</span>)]</span>
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>IOVec</span> {
     <span class='kw'>pub</span> <span class='ident'>ptr</span>: <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>u8</span>,
     <span class='kw'>pub</span> <span class='ident'>size</span>: <span class='ident'>usize</span>,
