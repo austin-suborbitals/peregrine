@@ -1,1 +1,2 @@
-// TODO: tlsf
+mod slab;
+pub use self::slab::SlabAllocator;

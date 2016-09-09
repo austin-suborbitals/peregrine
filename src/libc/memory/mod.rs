@@ -309,6 +309,7 @@ mod memcpy {
 //------------------------------------------------
 
 /// Defines an I/O Vector that contains a pointer and size.
+#[derive(Copy)]
 #[derive(Clone)]
 #[derive(Debug)]
 #[derive(PartialEq)]

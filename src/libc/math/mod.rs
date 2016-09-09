@@ -26,6 +26,10 @@ pub fn __aeabi_uidivmod(lhs: usize, rhs: usize) -> UDivModResult {
     UDivModResult{quot: cnt, rem: iter}
 }
 
+pub fn uceil(lhs: usize, rhs: usize) -> usize {
+    (lhs/rhs) + if (lhs%rhs) > 0 { 1 } else { 0 }
+}
+
 
 
 //
@@ -53,3 +57,7 @@ impl IDivModResult {
 
     IDivModResult{quot: cnt, rem: iter}
  }
+
+pub fn iceil(lhs: isize, rhs: isize) -> isize {
+    (lhs/rhs) + if (lhs%rhs) > 0 { 1 } else { 0 }
+}
