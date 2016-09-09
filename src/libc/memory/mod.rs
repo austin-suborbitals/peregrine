@@ -309,6 +309,9 @@ mod memcpy {
 //------------------------------------------------
 
 /// Defines an I/O Vector that contains a pointer and size.
+#[derive(Clone)]
+#[derive(Debug)]
+#[derive(PartialEq)]
 pub struct IOVec {
     pub ptr: *const u8,
     pub size: usize,

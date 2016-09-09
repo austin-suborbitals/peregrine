@@ -87,18 +87,18 @@ pub trait SysTick {
     /// execute the disabling.
     fn disable_interrupt(&self);
 
-	/// This function should set the value from which the counter will tick.
-	fn set_tick_reload_value(&self, val: usize);
+    /// This function should set the value from which the counter will tick.
+    fn set_tick_reload_value(&self, val: usize);
 
-	/// This function should return the current value of the countdown. If this cannot be accessed,
-	/// (-1) as usize should be returned.
-	fn current_tick(&self) -> usize;
+    /// This function should return the current value of the countdown. If this cannot be accessed,
+    /// (-1) as usize should be returned.
+    fn current_tick(&self) -> usize;
 
-	/// This function should indicate if the provided calibration value is reliable, or given at all.
-	fn has_calibration_value(&self) -> bool;
-	/// This function should return the 10ms calibration value, regardless of whether it is valid
-	/// or not. The caller is responsible for checking its validity.
-	fn calibration_value(&self) -> usize;
+    /// This function should indicate if the provided calibration value is reliable, or given at all.
+    fn has_calibration_value(&self) -> bool;
+    /// This function should return the 10ms calibration value, regardless of whether it is valid
+    /// or not. The caller is responsible for checking its validity.
+    fn calibration_value(&self) -> usize;
 
     // TODO: clock sourcing
 }

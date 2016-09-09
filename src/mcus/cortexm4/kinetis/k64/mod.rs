@@ -68,7 +68,7 @@ mcu!(
 
     peripherals => {
         // we initialize the watchdog first
-        wdog        => wdog::Watchdog                         @ 0x4005_2000;
+        wdog        => wdog::Watchdog                       @ 0x4005_2000;
 
         // core modules
         systick     => cortexm4::core::systick::SysTick     @ 0xE000_E010;

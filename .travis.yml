@@ -16,11 +16,7 @@ matrix:
         # host agnostic tests (linux)
         - env: PRGTARGET=test
         # thumbv7em build
-        - env: PRGTARGET=thumbv7m-none-eabi
+        - env: PRGTARGET=thumbv7m-release
 
-script: ./quick_build.sh --release --verbose
-
-#TODO: hmmm, need to enable all configs and will this build docs for every entry in the matrix?
-after_success:
-    - cargo doc
-    - ./scripts/ghp_upload.sh
+# if no env from matrix, doc... otherwise, build the target
+script:  if [ -z "$PRGTARGET" ]; then make doc-upload; else make $PRGTARGET; fi

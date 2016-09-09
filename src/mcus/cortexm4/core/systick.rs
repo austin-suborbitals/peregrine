@@ -6,11 +6,11 @@ use core::intrinsics::{volatile_load, volatile_store};
 /// On init, the interrupt is disabled, ticking is disabled, and the reload value is set to 0.
 ioreg!(
     name => SysTick;
-	init => pub fn init(&self) {
-		self.unset_exception_enable_bit();
-		self.unset_enable_bit();
-		self.reload(0);
-	};
+    init => pub fn init(&self) {
+        self.unset_exception_enable_bit();
+        self.unset_enable_bit();
+        self.reload(0);
+    };
 
     0x000 => status_and_control r32 rw {
         0 => {
@@ -23,14 +23,14 @@ ioreg!(
             unset_exception_enable_bit => [0x0];
         }
 
-		// TODO: clock sourcing
+        // TODO: clock sourcing
     };
 
-	0x0004 => reload r32 rw {
-		0..23 => { reload => (); }
-	};
+    0x0004 => reload r32 rw {
+        0..23 => { reload => (); }
+    };
 
-	0x0008 => calibration r32 ro {};
+    0x0008 => calibration r32 ro {};
 );
 
 impl ::traits::SysTick for SysTick {
@@ -51,15 +51,15 @@ impl ::traits::SysTick for SysTick {
     /// Disables the SysTick exception.
     fn disable_interrupt(&self) { self.unset_exception_enable_bit(); }
 
-	/// Sets the value the module will reload with when resetting.
-	fn set_tick_reload_value(&self, val: usize) { self.reload(val as u32); }
+    /// Sets the value the module will reload with when resetting.
+    fn set_tick_reload_value(&self, val: usize) { self.reload(val as u32); }
 
-	/// Fetch the current value of the countdown.
-	fn current_tick(&self) -> usize { (self.read_reload() & 0xFFFFFF) as usize }
+    /// Fetch the current value of the countdown.
+    fn current_tick(&self) -> usize { (self.read_reload() & 0xFFFFFF) as usize }
 
-	/// Polls for whether the 10ms calibration value is reliable
-	fn has_calibration_value(&self) -> bool { (self.read_calibration() & (0x1 << 29)) > 0 }
+    /// Polls for whether the 10ms calibration value is reliable
+    fn has_calibration_value(&self) -> bool { (self.read_calibration() & (0x1 << 29)) > 0 }
 
-	/// Fetches the 10ms calibration value.
-	fn calibration_value(&self) -> usize { (self.read_calibration() & 0xFFFFFF) as usize }
+    /// Fetches the 10ms calibration value.
+    fn calibration_value(&self) -> usize { (self.read_calibration() & 0xFFFFFF) as usize }
 }
