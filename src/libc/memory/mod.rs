@@ -327,6 +327,9 @@ impl IOVec {
     /// Casts the contained pointer to a pointer of the given generic type.
     pub fn convert_ptr<T>(&self) -> *const T { self.ptr as *const T }
 
+    /// Casts the contained pointer to a pointer of the given generic type as well as making it mutable.
+    pub fn convert_mut_ptr<T>(&self) -> *mut T { self.ptr as *mut T }
+
     /// Returns the pointer as a mutable pointer.
     pub fn as_mut(&self) -> *mut u8 { self.ptr as *mut u8 }
 }
