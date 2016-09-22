@@ -44,9 +44,21 @@
 
     <section id='main' class="content source"><pre class="line-numbers"><span id="1">1</span>
 <span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
 </pre><pre class='rust '>
 <span class='kw'>mod</span> <span class='ident'>bitmap</span>;
 <span class='kw'>pub</span> <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>bitmap</span>::<span class='ident'>Bitmap</span>;
+
+<span class='kw'>mod</span> <span class='ident'>ring_buffer</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>ring_buffer</span>::<span class='ident'>RingBuffer</span>;
+
+<span class='kw'>pub</span> <span class='kw'>mod</span> <span class='ident'>locks</span>;
+<span class='kw'>pub</span> <span class='kw'>use</span> <span class='self'>self</span>::<span class='ident'>locks</span>::<span class='ident'>SpinLock</span>;
 </pre>
 </section>
     <section id='search' class="content hidden"></section>

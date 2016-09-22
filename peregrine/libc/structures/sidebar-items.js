@@ -1,1 +1,1 @@
-initSidebarItems({"struct":[["Bitmap",""]]});
+initSidebarItems({"mod":[["locks",""]],"struct":[["Bitmap",""],["RingBuffer",""]]});
