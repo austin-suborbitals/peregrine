@@ -3,11 +3,8 @@ name = "peregrine"
 version = "0.1.0"
 authors = ["Zach Marcantel <zmarcantel@gmail.com>"]
 
-[profile.dev]
-panic = "abort"
-
-[profile.release]
-panic = "abort"
+[features]
+panic_default = []
 
 [dependencies]
 dynamo = { git = "https://github.com/austin-suborbitals/dynamo" }
