@@ -324,6 +324,11 @@ impl IOVec {
     /// Instantiates a new IOVec given a u32 address and size
     pub fn from_addr(addr: u32, size: usize) -> IOVec { IOVec{ptr:(addr as *const u8), size:size} }
 
+    /// Instantiates a new IOVec given two pointers
+    pub fn from_range<T>(begin: *const T, end: *const T) -> IOVec {
+        IOVec{ptr:begin as *const u8, size:(end as usize)-(begin as usize)}
+    }
+
     /// Casts the contained pointer to a pointer of the given generic type.
     pub fn convert_ptr<T>(&self) -> *const T { self.ptr as *const T }
 
