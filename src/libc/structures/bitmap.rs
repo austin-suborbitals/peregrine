@@ -12,12 +12,17 @@ impl Bitmap {
     // creation
     //
 
-    /// Create a new IOVec from the info, and initialize a bitmap
+    /// Create a bitmap from the starting pointer and number of bytes.
+    ///
+    /// This constructor effectively creates a new IOVec from the info, and initialize a bitmap
+    /// The bitmap is initialized (memset to zero) before the bitmap is returned.
     pub fn new(addr: *const u8, size: usize) -> Bitmap {
         Bitmap::from_iov(IOVec{ptr:addr, size:size})
     }
 
     /// Consume the IOVec and return the initialized bitmap
+    ///
+    /// The bitmap is initialized (memset to zero) before the bitmap is returned.
     pub fn from_iov(iov: IOVec) -> Bitmap {
         let num_bits = iov.size * 8;
         let mut result = Bitmap{
@@ -34,8 +39,10 @@ impl Bitmap {
     // initialization/cleanup
     //
 
-    /// Convenience function for clearing the entire bitmap. Internal use only, hence no-pub.
-    fn clear_all(&mut self) {
+    /// Convenience function for clearing the entire bitmap.
+    ///
+    /// This will invalidate the bitmap and will lead to data being overwritten with continued usage.
+    pub fn clear_all(&mut self) {
         self.used = 0;
         unsafe { ::libc::memory::memset(self.mem.as_mut(), 0, self.mem.size); }
     }
@@ -66,6 +73,15 @@ impl Bitmap {
     /// Sets the bit at the given index.
     ///
     /// An error is returned if the index is out of the bitmap's bounds.
+    ///
+    /// # Examples
+    /// ```
+    /// let arr = [0u8; 128];
+    /// let mut bmap = peregrine::libc::structures::Bitmap::new(&arr[0], arr.len());
+    ///
+    /// bmap.set(7); // set the 7th bit
+    /// assert!(bmap.is_set(7));
+    /// ```
     pub fn set(&mut self, index: usize) -> Result<(), &'static str> {
         if index > (self.total-1) {
             return Err("requested index to set is not in the bounds of the bitmap");
@@ -79,6 +95,17 @@ impl Bitmap {
     /// Sets the bit at the given index.
     ///
     /// An error is returned if the index is out of the bitmap's bounds or if the bit was already set.
+    ///
+    /// # Examples
+    /// ```
+    /// let arr = [0u8; 128];
+    /// let mut bmap = peregrine::libc::structures::Bitmap::new(&arr[0], arr.len());
+    ///
+    /// assert!(bmap.checked_set(5).is_ok());
+    /// assert!(bmap.checked_set(5).is_err());
+    /// bmap.clear(5);
+    /// assert!(bmap.checked_set(5).is_ok());
+    /// ```
     pub fn checked_set(&mut self, index: usize) -> Result<(), &'static str> {
         if index > self.total {
             return Err("requested index to set is not in the bounds of the bitmap");
@@ -99,10 +126,21 @@ impl Bitmap {
     /// Sets the bits starting at the given index through the given range.
     ///
     /// An error is returned if the index is out of the bitmap's bounds.
+    ///
+    /// # Examples
+    /// ```
+    /// let arr = [0u8; 128];
+    /// let mut bmap = peregrine::libc::structures::Bitmap::new(&arr[0], arr.len());
+    ///
+    /// bmap.set_range(0, arr.len()*8).expect("could not set");
+    /// assert_eq!(bmap.used(), bmap.count());
+    /// bmap.clear_range(0, arr.len()*8).expect("could not clear");
+    /// assert_eq!(0, bmap.used());
+    /// ```
     pub fn set_range(&mut self, index: usize, count: usize) -> Result<(), &'static str> {
         // TODO: this can be optimized wayyyyyyy more. but naive is ok for POC impl
         for i in index..(index+count) {
-            try!(self.set(i));
+            try!(self.set(i));     // TODO: checked_set?
         }
         Ok(())
     }
@@ -115,6 +153,17 @@ impl Bitmap {
     /// Clears the bit at the given index.
     ///
     /// An error is returned if the index is out of the bitmap's bounds.
+    ///
+    /// # Examples
+    /// ```
+    /// let arr = [0u8; 128];
+    /// let mut bmap = peregrine::libc::structures::Bitmap::new(&arr[0], arr.len());
+    ///
+    /// bmap.set(1);                            // mark #1 as set
+    /// assert_eq!(0, bmap.find(1).unwrap());    // look for 1 bit, and assert we get bit 0
+    /// bmap.clear(1);                          // clear bit 1
+    /// assert_eq!(0, bmap.used());                // assert nothing is used
+    /// ```
     pub fn clear(&mut self, index: usize) -> Result<(), &'static str> {
         if index > (self.total-1) {
             return Err("requested index to clear is not in the bounds of the bitmap");
@@ -125,9 +174,41 @@ impl Bitmap {
         Ok(())
     }
 
+    /// Clears the bits starting at the given index through the given range.
+    ///
+    /// An error is returned if the index is out of the bitmap's bounds.
+    ///
+    /// # Examples
+    /// ```
+    /// let arr = [0u8; 128];
+    /// let mut bmap = peregrine::libc::structures::Bitmap::new(&arr[0], arr.len());
+    ///
+    /// bmap.set_range(0, arr.len()*8).expect("could not set");
+    /// assert_eq!(bmap.used(), bmap.count());
+    /// bmap.clear_range(0, arr.len()*8).expect("could not clear");
+    /// assert_eq!(0, bmap.used());
+    /// ```
+    pub fn clear_range(&mut self, index: usize, count: usize) -> Result<(), &'static str> {
+        // TODO: this can be optimized wayyyyyyy more. but naive is ok for POC impl
+        for i in index..(index+count) {
+            try!(self.clear(i)); // TODO: checked_clear?
+        }
+        Ok(())
+    }
+
     /// Clears the bit at the given index.
     ///
     /// An error is returned if the index is out of the bitmap's bounds or if the bit was already unset.
+    ///
+    /// # Examples
+    /// ```
+    /// let arr = [0u8; 128];
+    /// let mut bmap = peregrine::libc::structures::Bitmap::new(&arr[0], arr.len());
+    ///
+    /// assert!(bmap.checked_clear(5).is_err());
+    /// assert!(bmap.set(5).is_ok());
+    /// assert!(bmap.checked_clear(5).is_ok());
+    /// ```
     pub fn checked_clear(&mut self, index: usize) -> Result<(), &'static str> {
         if index > self.total {
             return Err("requested index to clear is not in the bounds of the bitmap");
@@ -150,7 +231,19 @@ impl Bitmap {
     // searching
     //
 
-    /// Search the bitmap for `count` contiguous unset bits. If found, return the block number that starts the region.
+    /// Search the bitmap for `count` contiguous unset bits. If found, return the bit number that starts the region.
+    ///
+    /// # Examples
+    /// ```
+    /// let arr = [0u8; 128];
+    /// let mut bmap = peregrine::libc::structures::Bitmap::new(&arr[0], arr.len());
+    ///
+    /// bmap.set(0);                        // set bit 0
+    /// bmap.set(5);                        // set bit 5, giving us 0b100001
+    /// let first = bmap.find(5).unwrap();  // one larger than our gap
+    /// assert_eq!(6, first);
+    /// assert_eq!(1, bmap.find(4).expect("could not find the gap"));
+    /// ```
     pub fn find(&self, count: usize) -> Option<usize> {
         let mut contig = 0;
         let mut first_contig = 0;
@@ -177,6 +270,19 @@ impl Bitmap {
 
 
     /// Search the bitmap for `count` contiguous unset bits. If found, set them.
+    ///
+    /// __NOTE:__ This function uses `.set(...)` and not `.checked_set(...)` so safety is on the user.
+    ///
+    /// # Examples
+    /// ```
+    /// let arr = [0u8; 128];
+    /// let mut bmap = peregrine::libc::structures::Bitmap::new(&arr[0], arr.len());
+    ///
+    /// bmap.set(0);                        // set bit 0
+    /// bmap.set(5);                        // set bit 5, giving us 0b100001
+    /// bmap.find_and_set(4).unwrap();      // find and set the gap
+    /// assert_eq!(6, bmap.used());
+    /// ```
     pub fn find_and_set(&mut self, count: usize) -> Result<usize, &'static str> {
         let found = self.find(count);
         if found.is_none() { return Err("could not find enough contiguous bits"); }
@@ -189,9 +295,54 @@ impl Bitmap {
             Ok(bit)
         }
     }
+
+    /// Search the bitmap for `count` contiguous unset bits in the range [0, bound]. If found, set them.
+    ///
+    /// If the bound is beyond the limits of the bitmap an error is returned.
+    ///
+    /// A bounds is needed when the number of things you are tracking is not a multiple of 8.
+    /// However, adding another size-describing member variable adds space and time requirements.
+    ///
+    /// __NOTE:__ This function uses `.set(...)` and not `.checked_set(...)` so safety is on the user.
+    ///
+    /// # Examples
+    /// ```
+    /// let arr = [0u8; 128];
+    /// let mut bmap = peregrine::libc::structures::Bitmap::new(&arr[0], arr.len());
+    ///
+    /// // we have 128 bytes to manage things (128 * 8 = 1024), but maybe we only have 1000 items...
+    /// // set every other bit up to 1000
+    /// for i in 0..500 {
+    ///     bmap.set(i*2).expect("could not set");
+    /// }
+    ///
+    /// // attempt to find 2 contiguous bits in our range... and expect to fail
+    /// assert!(bmap.bounded_find_and_set(2, 1000).is_err());
+    ///
+    /// // but we CAN find it unbounded
+    /// assert!(bmap.find_and_set(2).is_ok());
+    /// ```
+    pub fn bounded_find_and_set(&mut self, count: usize, bound: usize) -> Result<usize, &'static str> {
+        if bound >= self.count() {
+            return Err("bound is beyond the number of bits in the bitmap");
+        }
+
+        let found = self.find(count);
+        if found.is_none() { return Err("could not find enough contiguous bits"); }
+
+        let bit = found.unwrap();
+        if (bit + count) > bound {
+            return Err("no empty bits within the bounds");
+        }
+
+        let result = self.set_range(bit, count);
+        if result.is_err() {
+            Err(result.err().unwrap())
+        } else {
+            Ok(bit)
+        }
+    }
 }
-
-
 
 #[cfg(test)]
 mod tests {

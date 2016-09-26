@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Zach Marcantel <zmarcantel@gmail.com>"]
 
 [features]
-panic_default = []
+panic_default = []  # TODO: check sanity of just looping without shutdown of some modules
 
 [dependencies]
 dynamo = { git = "https://github.com/austin-suborbitals/dynamo" }

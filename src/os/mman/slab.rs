@@ -68,7 +68,7 @@ impl SlabAllocator {
         if block_count > self.bitmap.free() { return Err("not enough free blocks (without checking continuity)"); }
         if block_count > self.num_blocks { return Err("requested block count is more than exist in this heap"); }
 
-        let blocks = self.bitmap.find_and_set(block_count); // TODO: bitmap bounds may differ from block bounds
+        let blocks = self.bitmap.bounded_find_and_set(block_count, self.num_blocks);
         if blocks.is_err() { return Err(blocks.err().unwrap()); }
 
         Ok(IOVec{
@@ -80,6 +80,10 @@ impl SlabAllocator {
     /// Free the given region of allocated memory. The input ideally should come from a previous `::alloc()`.
     ///
     /// Errors occur from bounds checking, freeing unallocated/unmanaged memory, or unaligned `IOVec` pointer and/or size.
+    ///
+    /// __NOTE:__ if `Bitmap::checked_clear(...)` returns an error, the error is immediately returned. This is being worked on
+    /// but can lead to things not being freed. The solution will likely be returning the index with the error -- but we cannot
+    /// return a `Vec` of errors for instance.
     pub fn free(&mut self, iov: IOVec) -> Result<(), &'static str> {
         let offset = (iov.ptr as usize) - (self.blocks.ptr as usize);
         if offset % self.block_size != 0 {
@@ -99,7 +103,7 @@ impl SlabAllocator {
         }
 
         for i in 0..num_blocks {
-            let check = self.bitmap.checked_clear(first_block+i);   // TODO: bitmap bounds differing from block bounds
+            let check = self.bitmap.checked_clear(first_block+i); // we "naturally" limit the "unaligned" bitmap here
             if check.is_err() {
                 return Err(check.err().unwrap()); // TODO: what to do with the things we skip on early exit?
             }
@@ -149,6 +153,18 @@ mod test {
             let buff = [0u8; 4200];
             let mut mman = super::super::SlabAllocator::new(IOVec{ptr:&buff[0], size:buff.len()}, 1024);
             assert!(mman.alloc(5).is_err());
+        }
+
+        #[test]
+        pub fn alloc_bounded() {
+            let buff = [0u8; 5125]; // enough for bitmap but not 8-byte aligned
+            let mut mman = super::super::SlabAllocator::new(IOVec{ptr:&buff[0], size:buff.len()}, 1024);
+
+            for i in 0..5 {
+                let result = mman.alloc(1);
+                assert!(result.is_ok(), "could not allocate block {} out of {}: {:?}", i, mman.blocks(), result);
+            }
+            assert!(mman.alloc(1).is_err());
         }
     }
 
