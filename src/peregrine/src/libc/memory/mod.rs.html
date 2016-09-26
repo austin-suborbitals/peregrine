@@ -377,6 +377,11 @@
 <span id="333">333</span>
 <span id="334">334</span>
 <span id="335">335</span>
+<span id="336">336</span>
+<span id="337">337</span>
+<span id="338">338</span>
+<span id="339">339</span>
+<span id="340">340</span>
 </pre><pre class='rust '>
 <span class='kw'>use</span> <span class='ident'>core</span>::<span class='ident'>intrinsics</span>;
 <span class='kw'>use</span> <span class='ident'>core</span>::<span class='ident'>cmp</span>::{<span class='ident'>PartialOrd</span>, <span class='ident'>PartialEq</span>};
@@ -703,6 +708,11 @@
 
     <span class='doccomment'>/// Instantiates a new IOVec given a u32 address and size</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>from_addr</span>(<span class='ident'>addr</span>: <span class='ident'>u32</span>, <span class='ident'>size</span>: <span class='ident'>usize</span>) <span class='op'>-&gt;</span> <span class='ident'>IOVec</span> { <span class='ident'>IOVec</span>{<span class='ident'>ptr</span>:(<span class='ident'>addr</span> <span class='kw'>as</span> <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>u8</span>), <span class='ident'>size</span>:<span class='ident'>size</span>} }
+
+    <span class='doccomment'>/// Instantiates a new IOVec given two pointers</span>
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>from_range</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>(<span class='ident'>begin</span>: <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>T</span>, <span class='ident'>end</span>: <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>T</span>) <span class='op'>-&gt;</span> <span class='ident'>IOVec</span> {
+        <span class='ident'>IOVec</span>{<span class='ident'>ptr</span>:<span class='ident'>begin</span> <span class='kw'>as</span> <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>u8</span>, <span class='ident'>size</span>:(<span class='ident'>end</span> <span class='kw'>as</span> <span class='ident'>usize</span>)<span class='op'>-</span>(<span class='ident'>begin</span> <span class='kw'>as</span> <span class='ident'>usize</span>)}
+    }
 
     <span class='doccomment'>/// Casts the contained pointer to a pointer of the given generic type.</span>
     <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>convert_ptr</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>(<span class='kw-2'>&amp;</span><span class='self'>self</span>) <span class='op'>-&gt;</span> <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>T</span> { <span class='self'>self</span>.<span class='ident'>ptr</span> <span class='kw'>as</span> <span class='op'>*</span><span class='kw'>const</span> <span class='ident'>T</span> }

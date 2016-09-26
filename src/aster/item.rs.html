@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="rustdoc">
-    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/aster-0.27.0/src/item.rs`.">
+    <meta name="description" content="Source to the Rust file `/home/travis/.cargo/registry/src/github.com-1ecc6299db9ec823/aster-0.28.0/src/item.rs`.">
     <meta name="keywords" content="rust, rustlang, rust-lang">
 
     <title>item.rs.html -- source</title>
@@ -1525,6 +1525,27 @@
 <span id="1481">1481</span>
 <span id="1482">1482</span>
 <span id="1483">1483</span>
+<span id="1484">1484</span>
+<span id="1485">1485</span>
+<span id="1486">1486</span>
+<span id="1487">1487</span>
+<span id="1488">1488</span>
+<span id="1489">1489</span>
+<span id="1490">1490</span>
+<span id="1491">1491</span>
+<span id="1492">1492</span>
+<span id="1493">1493</span>
+<span id="1494">1494</span>
+<span id="1495">1495</span>
+<span id="1496">1496</span>
+<span id="1497">1497</span>
+<span id="1498">1498</span>
+<span id="1499">1499</span>
+<span id="1500">1500</span>
+<span id="1501">1501</span>
+<span id="1502">1502</span>
+<span id="1503">1503</span>
+<span id="1504">1504</span>
 </pre><pre class='rust '>
 <span class='attribute'>#<span class='op'>!</span>[<span class='ident'>cfg_attr</span>(<span class='ident'>feature</span> <span class='op'>=</span> <span class='string'>&quot;unstable&quot;</span>, <span class='ident'>allow</span>(<span class='ident'>wrong_self_convention</span>))]</span>
 
@@ -1657,6 +1678,21 @@
         <span class='kw'>let</span> <span class='ident'>generics</span> <span class='op'>=</span> <span class='ident'>GenericsBuilder</span>::<span class='ident'>new</span>().<span class='ident'>build</span>();
 
         <span class='ident'>ItemStructBuilder</span> {
+            <span class='ident'>is_union</span>: <span class='bool-val'>false</span>,
+            <span class='ident'>builder</span>: <span class='self'>self</span>,
+            <span class='ident'>id</span>: <span class='ident'>id</span>,
+            <span class='ident'>generics</span>: <span class='ident'>generics</span>,
+        }
+    }
+
+    <span class='kw'>pub</span> <span class='kw'>fn</span> <span class='ident'>union_</span><span class='op'>&lt;</span><span class='ident'>T</span><span class='op'>&gt;</span>(<span class='self'>self</span>, <span class='ident'>id</span>: <span class='ident'>T</span>) <span class='op'>-&gt;</span> <span class='ident'>ItemStructBuilder</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span>
+        <span class='kw'>where</span> <span class='ident'>T</span>: <span class='ident'>ToIdent</span>,
+    {
+        <span class='kw'>let</span> <span class='ident'>id</span> <span class='op'>=</span> <span class='ident'>id</span>.<span class='ident'>to_ident</span>();
+        <span class='kw'>let</span> <span class='ident'>generics</span> <span class='op'>=</span> <span class='ident'>GenericsBuilder</span>::<span class='ident'>new</span>().<span class='ident'>build</span>();
+
+        <span class='ident'>ItemStructBuilder</span> {
+            <span class='ident'>is_union</span>: <span class='bool-val'>true</span>,
             <span class='ident'>builder</span>: <span class='self'>self</span>,
             <span class='ident'>id</span>: <span class='ident'>id</span>,
             <span class='ident'>generics</span>: <span class='ident'>generics</span>,
@@ -1983,6 +2019,7 @@
 <span class='comment'>//////////////////////////////////////////////////////////////////////////////</span>
 
 <span class='kw'>pub</span> <span class='kw'>struct</span> <span class='ident'>ItemStructBuilder</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span> {
+    <span class='ident'>is_union</span>: <span class='ident'>bool</span>,
     <span class='ident'>builder</span>: <span class='ident'>ItemBuilder</span><span class='op'>&lt;</span><span class='ident'>F</span><span class='op'>&gt;</span>,
     <span class='ident'>id</span>: <span class='ident'>ast</span>::<span class='ident'>Ident</span>,
     <span class='ident'>generics</span>: <span class='ident'>ast</span>::<span class='ident'>Generics</span>,
@@ -2040,8 +2077,13 @@
     <span class='kw'>type</span> <span class='prelude-ty'>Result</span> <span class='op'>=</span> <span class='ident'>F</span>::<span class='prelude-ty'>Result</span>;
 
     <span class='kw'>fn</span> <span class='ident'>invoke</span>(<span class='self'>self</span>, <span class='ident'>data</span>: <span class='ident'>ast</span>::<span class='ident'>VariantData</span>) <span class='op'>-&gt;</span> <span class='ident'>F</span>::<span class='prelude-ty'>Result</span> {
-        <span class='kw'>let</span> <span class='ident'>struct_</span> <span class='op'>=</span> <span class='ident'>ast</span>::<span class='ident'>ItemKind</span>::<span class='ident'>Struct</span>(<span class='ident'>data</span>, <span class='self'>self</span>.<span class='ident'>generics</span>);
-        <span class='self'>self</span>.<span class='ident'>builder</span>.<span class='ident'>build_item_kind</span>(<span class='self'>self</span>.<span class='ident'>id</span>, <span class='ident'>struct_</span>)
+        <span class='kw'>let</span> <span class='ident'>kind</span> <span class='op'>=</span> <span class='kw'>if</span> <span class='self'>self</span>.<span class='ident'>is_union</span> {
+            <span class='ident'>ast</span>::<span class='ident'>ItemKind</span>::<span class='ident'>Union</span>(<span class='ident'>data</span>, <span class='self'>self</span>.<span class='ident'>generics</span>)
+        } <span class='kw'>else</span> {
+            <span class='ident'>ast</span>::<span class='ident'>ItemKind</span>::<span class='ident'>Struct</span>(<span class='ident'>data</span>, <span class='self'>self</span>.<span class='ident'>generics</span>)
+        };
+
+        <span class='self'>self</span>.<span class='ident'>builder</span>.<span class='ident'>build_item_kind</span>(<span class='self'>self</span>.<span class='ident'>id</span>, <span class='ident'>kind</span>)
     }
 }
 
