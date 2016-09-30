@@ -29,6 +29,7 @@ git config user.email "$PROJECT_NAME@travis-ci.org"
 
 echo "copying docs to deploy_docs..."
 cp -rf ../target/doc/* ./
+cp -rf ../target/cov ./
 
 # create an index.html redirect
 echo "creating index.html"
