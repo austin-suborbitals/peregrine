@@ -15,11 +15,8 @@ test-release:
 doc:
 	cargo doc
 
-doc-upload: doc coverage
+doc-upload: doc
 	@./scripts/ghp_upload.sh
-
-coverage:
-	make -C scripts coverage
 
 #
 # thumbv7m
