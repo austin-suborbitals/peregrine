@@ -16,7 +16,7 @@ matrix:
         # host agnostic tests (linux)
         - env: PRGTARGET=test
         # thumbv7em build
-        - env: PRGTARGET=thumbv7m-release
+        - env: PRGTARGET=m4-release
 
 # if no env from matrix, doc... otherwise, build the target
 script:  if [ -z "$PRGTARGET" ]; then make doc-upload; else make $PRGTARGET; fi

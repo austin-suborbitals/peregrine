@@ -1,5 +1,3 @@
-export RUST_TARGET_PATH=$$RUST_TARGET_PATH:./build_targets
-
 default:
 	@echo "No default target. Please choose a target."
 
@@ -19,11 +17,11 @@ doc-upload: doc
 	@./scripts/ghp_upload.sh
 
 #
-# thumbv7m
+# cortex-m4
 #
 
-thumbv7m:
-	cargo build --target thumbv7m-none-eabi
+m4:
+	cargo build --target thumbv7em-none-eabi
 
-thumbv7m-release:
-	cargo build --target thumbv7m-none-eabi --release
+m4-release:
+	cargo build --target thumbv7em-none-eabi --release
